@@ -1,5 +1,7 @@
+import csv
 import random
 from copy import deepcopy
+from datetime import datetime
 
 from eckity.algorithms.simple_evolution import SimpleEvolution
 from eckity.creators.creator import Creator
@@ -38,7 +40,7 @@ class StrategyIndividual(Individual):
 class StrategyEvaluator(SimpleIndividualEvaluator):
     def _evaluate_individual(self, individual: StrategyIndividual):
         # simulate N hands using this strategy and return the normalized chip count (non-negative)
-        return simulate_hands(100000, individual.strategy)
+        return simulate_hands(5000, individual.strategy)
 
 
 class StrategyCreator(Creator):
@@ -120,9 +122,28 @@ algo = SimpleEvolution(
         higher_is_better=True
     ),
     statistics=None,
-    max_generation=20  # find optimal value
+    max_generation=100  # find optimal value
 )
 
 if __name__ == "__main__":
     algo.evolve()
-    algo.finish()
+    result = algo.best_of_run_
+    # save to csv file
+    with open(f"results\\{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.csv", 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Hard Hands:"])
+        writer.writerow(["", "2", "3", "4", "5", "6", "7", "8", "9", "T", "A"])
+        i = 20
+        hard = deepcopy(result.strategy.hard_hands)
+        hard.reverse()
+        for row in hard:
+            writer.writerow([i, *[str(item) for item in row]])
+            i -= 1
+        writer.writerow(["Soft Hands:"])
+        writer.writerow(["", "2", "3", "4", "5", "6", "7", "8", "9", "T", "A"])
+        i = 9
+        soft = deepcopy(result.strategy.soft_hands)
+        soft.reverse()
+        for row in soft:
+            writer.writerow([f"A-{i}", *[str(item) for item in row]])
+            i -= 1
