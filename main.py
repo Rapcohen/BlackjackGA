@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 from eckity.algorithms.simple_evolution import SimpleEvolution
 from eckity.creators.creator import Creator
@@ -18,11 +19,26 @@ class StrategyIndividual(Individual):
         super().__init__(fitness)
         self.strategy = strategy
 
+    def show(self):
+        hard = deepcopy(self.strategy.hard_hands)
+        hard.reverse()
+        soft = deepcopy(self.strategy.soft_hands)
+        soft.reverse()
+        print("Hard Hands:")
+        print(f"\t {['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'A']}")
+        i = 20
+        for row in hard:
+            print(f'{i}\t {[str(item) for item in row]}')
+            i -= 1
+        print("Soft Hands:")
+        for row in soft:
+            print([str(item) for item in row])
+
 
 class StrategyEvaluator(SimpleIndividualEvaluator):
     def _evaluate_individual(self, individual: StrategyIndividual):
         # simulate N hands using this strategy and return the normalized chip count (non-negative)
-        return simulate_hands(1000, individual.strategy)
+        return simulate_hands(100000, individual.strategy)
 
 
 class StrategyCreator(Creator):
@@ -34,22 +50,55 @@ class StrategyCreator(Creator):
         ivdividuals = []
         for _ in range(n_individuals):
             strategy = Strategy(
-                [[self.random_action() for _ in range(17)] for _ in range(10)],
-                [[self.random_action() for _ in range(8)] for _ in range(10)],
+                [[self.random_action() for _ in range(10)] for _ in range(17)],
+                [[self.random_action() for _ in range(10)] for _ in range(8)],
             )
             ivdividuals.append(StrategyIndividual(strategy, SimpleFitness(higher_is_better=higher_is_better)))
         return ivdividuals
 
 
 class StrategyCrossover(GeneticOperator):
+    def __init__(self, probability=1, arity=2, events=None):
+        super().__init__(probability, arity, events)
+
     def apply(self, individuals):
-        # apply crossover to the individuals (relative to their fitness)
+        for i in range(17):
+            for j in range(10):
+                if random.random() < 0.5:
+                    self.swap_hard(individuals, i, j)
+
+        for i in range(8):
+            for j in range(10):
+                if random.random() < 0.5:
+                    self.swap_soft(individuals, i, j)
+
+        self.applied_individuals = individuals
         return individuals
+
+    def swap_hard(self, individuals, i, j):
+        individuals[0].strategy.hard_hands[i][j], individuals[1].strategy.hard_hands[i][j] = \
+            individuals[1].strategy.hard_hands[i][j], individuals[0].strategy.hard_hands[i][j]
+
+    def swap_soft(self, individuals, i, j):
+        individuals[0].strategy.soft_hands[i][j], individuals[1].strategy.soft_hands[i][j] = \
+            individuals[1].strategy.soft_hands[i][j], individuals[0].strategy.soft_hands[i][j]
 
 
 class StrategyMutation(GeneticOperator):
+    def __init__(self, probability=1, arity=1, events=None):
+        super().__init__(probability, arity, events)
+
     def apply(self, individuals):
-        # apply mutation to the individuals
+        if random.random() < 0.01:
+            i = random.randint(0, 16)
+            j = random.randint(0, 9)
+            individuals[0].strategy.hard_hands[i][j] = random.choice(list(Action))
+        if random.random() < 0.01:
+            i = random.randint(0, 7)
+            j = random.randint(0, 9)
+            individuals[0].strategy.soft_hands[i][j] = random.choice(list(Action))
+
+        self.applied_individuals = individuals
         return individuals
 
 
@@ -63,7 +112,7 @@ algo = SimpleEvolution(
             StrategyMutation(),
         ],
         selection_methods=[
-            TournamentSelection(tournament_size=2, higher_is_better=True, events=None)
+            (TournamentSelection(tournament_size=2, higher_is_better=True, events=None), 1)
         ],
         elitism_rate=0.01,  # find optimal value
         population_size=100,  # find optimal value
@@ -71,7 +120,7 @@ algo = SimpleEvolution(
         higher_is_better=True
     ),
     statistics=None,
-    max_generation=10  # find optimal value
+    max_generation=20  # find optimal value
 )
 
 if __name__ == "__main__":

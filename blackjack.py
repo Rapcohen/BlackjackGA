@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 from enum import Enum
 from typing import List
 
@@ -11,7 +12,11 @@ class Action(Enum):
     HIT = 1
     STAND = 2
     DOUBLE_DOWN = 3
+
     # SPLIT = 4
+
+    def __str__(self):
+        return self.name[0]
 
 
 class Result(Enum):
@@ -45,12 +50,12 @@ class Strategy:
         return has_ace and sum([card._value for card in hand]) <= 20
 
     def get_hard_action(self, dealer_card: Card, player: Player) -> Action:
-        return self.hard_hands[dealer_card._value - self.min_dealer_hand][player.total - self.min_hard_hand]
+        return self.hard_hands[player.total - self.min_hard_hand][dealer_card._value - self.min_dealer_hand]
 
     def get_soft_action(self, dealer_card: Card, player_hand: List[Card]) -> Action:
         hand_value_without_ace = sum([card._value for card in player_hand if card.rank != "A"])
-        return self.soft_hands[dealer_card._value - self.min_dealer_hand][
-            hand_value_without_ace - self.min_soft_hand_without_ace]
+        return self.soft_hands[hand_value_without_ace - self.min_soft_hand_without_ace][
+            dealer_card._value - self.min_dealer_hand]
 
 
 def simulate_hands(n_hands: int, strategy):
@@ -94,7 +99,21 @@ def random_action():
 
 if __name__ == "__main__":
     strategy = Strategy(
-        [[random_action() for _ in range(17)] for _ in range(10)],
-        [[random_action() for _ in range(8)] for _ in range(10)],
+        [[random_action() for _ in range(10)] for _ in range(17)],
+        [[random_action() for _ in range(10)] for _ in range(8)],
     )
-    print(simulate_hands(100000, strategy))
+    hard = deepcopy(strategy.hard_hands)
+    hard.reverse()
+    soft = deepcopy(strategy.soft_hands)
+    soft.reverse()
+    print("Hard Hands:")
+    print(f"\t {['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'A']}")
+    i = 20
+    for row in hard:
+        print(f'{i}\t {[str(item) for item in row]}')
+        i -= 1
+    print("Soft Hands:")
+    for row in soft:
+        print([str(item) for item in row])
+
+    simulate_hands(3, strategy)
