@@ -39,8 +39,12 @@ class Strategy:
         self.soft_hands = soft_hands
 
     def get_action(self, dealer_card: Card, player: Player) -> Action:
-        action = self.get_soft_action(dealer_card, player) if self.is_soft(player.hand) else self.get_hard_action(
-            dealer_card, player)
+        if self.is_soft(player.hand):
+            hand_value_without_ace = sum([card._value for card in player.hand if card.rank != "A"])
+            action = self.soft_hands[hand_value_without_ace - self.min_soft_hand][
+                dealer_card._value - self.min_dealer_card]
+        else:
+            action = self.hard_hands[player.total - self.min_hard_hand][dealer_card._value - self.min_dealer_card]
         if action == Action.DOUBLE_DOWN and not player.can_double_down:
             return Action.HIT
         return action
@@ -57,36 +61,34 @@ class Strategy:
         return any(card.rank == "A" for card in hand) and sum([card._value for card in hand]) < 21
 
 
-def simulate_hands(n_hands: int, strategy: Strategy) -> int:
-    fixed_bet = 1
+def play_hand(strategy: Strategy) -> int:
     cash = 0
 
-    for hand in range(n_hands):
-        # initializing table
-        table = Table((("AI", fixed_bet),))
-        player = table.players[0]
-        dealer_hand = table.dealer.hand[0]
-
-        # not counting blackjack win as a strategy win
-        if player.total == 21:
-            continue
-
-        # playing hand
+    ai_player = ("", 1)
+    table = Table((ai_player, ai_player, ai_player, ai_player, ai_player))
+    valid_players = [player for player in table.players if player.total != 21]
+    dealer_card = table.dealer.hand[0]
+    for player in valid_players:
         while not (player.bust or player.stand):
-            action = strategy.get_action(dealer_hand, player)
-            if action == Action.DOUBLE_DOWN:
-                player.play_double_down()
+            action = strategy.get_action(dealer_card, player)
+            if action == Action.STAND:
+                player.play_stand()
             elif action == Action.HIT:
                 player.play_hit()
-            elif action == Action.STAND:
-                player.play_stand()
+            elif action == Action.DOUBLE_DOWN:
+                player.play_double_down()
 
-        # checking result
-        table.dealer.play_dealer()
+    table.dealer.play_dealer()
+    for player in valid_players:
         result = Result(player.result)
         if result in [Result.PLAYER_BLACKJACK, Result.PLAYER_WIN, Result.DEALER_BUST]:
             cash += player.bet
         elif result in [Result.PLAYER_BUST, Result.PLAYER_LOSE]:
             cash -= player.bet
+        # else it's a tie and cash is split with the dealer
 
     return cash
+
+
+def simulate_hands(n_hands: int, strategy: Strategy) -> int:
+    return sum([play_hand(strategy) for _ in range(n_hands // 5)])

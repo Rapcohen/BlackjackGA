@@ -54,24 +54,26 @@ class StrategyCrossover(GeneticOperator):
         super().__init__(probability, arity, events)
 
     def apply(self, individuals):
-        for i in range(17):
-            for j in range(10):
+        for i in range(Strategy.hard_hands_dim[0]):
+            for j in range(Strategy.hard_hands_dim[1]):
                 if random.random() < 0.5:
                     self.swap_hard(individuals, i, j)
 
-        for i in range(8):
-            for j in range(10):
+        for i in range(Strategy.soft_hands_dim[0]):
+            for j in range(Strategy.soft_hands_dim[1]):
                 if random.random() < 0.5:
                     self.swap_soft(individuals, i, j)
 
         self.applied_individuals = individuals
         return individuals
 
-    def swap_hard(self, individuals, i, j):
+    @staticmethod
+    def swap_hard(individuals, i, j):
         individuals[0].strategy.hard_hands[i][j], individuals[1].strategy.hard_hands[i][j] = \
             individuals[1].strategy.hard_hands[i][j], individuals[0].strategy.hard_hands[i][j]
 
-    def swap_soft(self, individuals, i, j):
+    @staticmethod
+    def swap_soft(individuals, i, j):
         individuals[0].strategy.soft_hands[i][j], individuals[1].strategy.soft_hands[i][j] = \
             individuals[1].strategy.soft_hands[i][j], individuals[0].strategy.soft_hands[i][j]
 
@@ -82,12 +84,12 @@ class StrategyMutation(GeneticOperator):
 
     def apply(self, individuals):
         if random.random() < 0.01:
-            i = random.randint(0, 16)
-            j = random.randint(0, 9)
+            i = random.randint(0, Strategy.hard_hands_dim[0] - 1)
+            j = random.randint(0, Strategy.hard_hands_dim[1] - 1)
             individuals[0].strategy.hard_hands[i][j] = random.choice(list(Action))
         if random.random() < 0.01:
-            i = random.randint(0, 7)
-            j = random.randint(0, 9)
+            i = random.randint(0, Strategy.soft_hands_dim[0] - 1)
+            j = random.randint(0, Strategy.soft_hands_dim[1] - 1)
             individuals[0].strategy.soft_hands[i][j] = random.choice(list(Action))
 
         self.applied_individuals = individuals
@@ -107,11 +109,11 @@ algo = SimpleEvolution(
             (TournamentSelection(tournament_size=2, higher_is_better=True, events=None), 1)
         ],
         elitism_rate=0.01,  # find optimal value
-        population_size=2,  # find optimal value
+        population_size=8,  # find optimal value
         individuals=None,
         higher_is_better=True
     ),
-    max_generation=1,  # find optimal value
+    max_generation=60,  # find optimal value
     max_workers=None,  # uses all available cores
     statistics=BestAverageWorstStatistics(),
 )
