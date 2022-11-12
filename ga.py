@@ -83,14 +83,16 @@ class StrategyMutation(GeneticOperator):
         super().__init__(probability, arity, events)
 
     def apply(self, individuals):
-        if random.random() < 0.01:
+        if random.random() < 0.025:
             i = random.randint(0, Strategy.hard_hands_dim[0] - 1)
             j = random.randint(0, Strategy.hard_hands_dim[1] - 1)
-            individuals[0].strategy.hard_hands[i][j] = random.choice(list(Action))
-        if random.random() < 0.01:
+            individuals[0].strategy.hard_hands[i][j] = random.choice(
+                [action for action in list(Action) if action != individuals[0].strategy.hard_hands[i][j]])
+        if random.random() < 0.025:
             i = random.randint(0, Strategy.soft_hands_dim[0] - 1)
             j = random.randint(0, Strategy.soft_hands_dim[1] - 1)
-            individuals[0].strategy.soft_hands[i][j] = random.choice(list(Action))
+            individuals[0].strategy.soft_hands[i][j] = random.choice(
+                [action for action in list(Action) if action != individuals[0].strategy.soft_hands[i][j]])
 
         self.applied_individuals = individuals
         return individuals
@@ -108,12 +110,12 @@ algo = SimpleEvolution(
         selection_methods=[
             (TournamentSelection(tournament_size=2, higher_is_better=True, events=None), 1)
         ],
-        elitism_rate=0.01,  # find optimal value
-        population_size=8,  # find optimal value
+        elitism_rate=0.0,  # find optimal value
+        population_size=500,  # find optimal value
         individuals=None,
         higher_is_better=True
     ),
-    max_generation=60,  # find optimal value
+    max_generation=50,  # find optimal value
     max_workers=None,  # uses all available cores
     statistics=BestAverageWorstStatistics(),
 )
