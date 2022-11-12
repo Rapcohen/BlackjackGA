@@ -1,4 +1,5 @@
 import random
+from datetime import datetime
 
 from eckity.algorithms.simple_evolution import SimpleEvolution
 from eckity.creators.creator import Creator
@@ -12,6 +13,7 @@ from eckity.statistics.best_average_worst_statistics import BestAverageWorstStat
 from eckity.subpopulation import Subpopulation
 
 from blackjack import Strategy, simulate_hands, Action
+from utils import save_result_to_csv_file
 
 
 class StrategyIndividual(Individual):
@@ -98,6 +100,18 @@ class StrategyMutation(GeneticOperator):
         return individuals
 
 
+class StrategyStatistics(BestAverageWorstStatistics):
+    def __init__(self):
+        super().__init__()
+        self.execution_date_time = datetime.now()
+
+    def write_statistics(self, sender, data_dict):
+        super().write_statistics(sender, data_dict)
+        best_individual = data_dict["population"].sub_populations[0].get_best_individual()
+        generation = data_dict["generation_num"]
+        save_result_to_csv_file(self.execution_date_time, best_individual, generation)
+
+
 algo = SimpleEvolution(
     population=Subpopulation(
         evaluator=StrategyEvaluator(n_hands=100000),
@@ -110,12 +124,12 @@ algo = SimpleEvolution(
         selection_methods=[
             (TournamentSelection(tournament_size=2, higher_is_better=True, events=None), 1)
         ],
-        elitism_rate=0.0,  # find optimal value
+        elitism_rate=0.01,  # find optimal value
         population_size=500,  # find optimal value
         individuals=None,
         higher_is_better=True
     ),
     max_generation=50,  # find optimal value
     max_workers=None,  # uses all available cores
-    statistics=BestAverageWorstStatistics(),
+    statistics=StrategyStatistics(),
 )
