@@ -1,28 +1,25 @@
 # Genetic Algorithm Solution for Blackjack
 
 ## Introduction
-The goal of this project is to find the optimal [Blackjack](https://en.wikipedia.org/wiki/Blackjack) strategy using a
+
+The goal of this project is to find the optimal [Blackjack](https://en.wikipedia.org/wiki/Blackjack) strategy by using a
 genetic algorithm.
 
-It is important to mention that this problem has already been solved, but we are going to solve it again using a
-different approach.
+It is important to mention that this problem has already been solved with different approaches.
 The fact that this problem has already been solved allows us to compare the results of our algorithm with the best known
 solution.
 
-We used the [EC-Kity](https://github.com/ec-kity/ec-kity/) tool kit for evolutionary computation to implement our
-algorithm.
-
 ## What is a Blackjack Strategy?
+
 A Blackjack strategy is basically a lookup table which tells the player which action to take according to the current
 state of the game.
 
 The state of the game is defined by the player's hand and the dealer's up card.
 
-The action that the player can take is _hit_, _stand_, _double down_, or _split_.
+The action that the player can take is **hit**, **stand**, **double down**, or **split**.
+For simplicity, in this project we will not consider the split action.
 
-In this project, we will not consider the split action for simplicity.
-
-There are two types of Blackjack hands: _hard_ and _soft_:
+There are two types of Blackjack hands: **hard** and **soft**:
 
 - If a hand contains an ace which can be counted as 11 without busting, then it is a soft hand.
 - Otherwise, it is a hard hand.
@@ -34,7 +31,8 @@ the 1960s:
 
 [//]: # (insert image here)
 
-## What is a Genetic Algorithm?
+## Why Use a Genetic Algorithm?
+
 A genetic algorithm is a search algorithm that is inspired by the process of natural selection.
 
 It works by creating a population of random solutions, then repeatedly creating a new generation of solutions by
@@ -56,6 +54,7 @@ This is exactly the case of the Blackjack strategy problem, as there is a huge n
 ## Algorithm Settings
 
 ### Representation
+
 We need to a way to represent the individuals of the population.
 In our case, the individuals are Blackjack strategies.
 
@@ -68,6 +67,7 @@ This is exactly how we are going to represent the strategies in our genetic algo
 - Each entry in these matrices holds an action (HIT / STAND / DOUBLE DOWN).
 
 ### Fitness Score
+
 We need a way to evaluate the quality of a strategy.
 The fitness score is a numeric value that represents how good a strategy is. The higher the score, the better the
 strategy.
@@ -94,6 +94,7 @@ After some experimentation, we found that simulating 100,000 rounds strikes a go
 calculate the fitness score and the accuracy of the fitness score.
 
 ### Selection
+
 We need a way to select the best strategies from the population.
 The strategies are compared using their fitness score.
 
@@ -111,6 +112,7 @@ It also avoids pitfalls such as premature convergence which could occur when usi
 selection.
 
 ### Elitism
+
 We need a way to preserve the best strategies from the previous generation.
 This can be achieved by using a technique called elitism.
 
@@ -122,12 +124,14 @@ We have decided to use a small elitism rate of 0.01 (1%).
 This preserves the best strategies from the previous generation, while still allowing the population to evolve.
 
 ### Crossover
+
 We need a way to combine strategies from the previous generation to create new strategies.
 A crossover can be done in many elaborate ways, but in our case we are going to do something quite straightforward.
 Given two strategies, we iterate over all entries in both tables, and swap the entries between the two strategies with a
 probability of 0.5 (50%).
 
 ### Mutation
+
 We need a way to mutate the strategies in order to introduce diversity in the population.
 
 This is quite simple in our case, as we can simply change the action of a random entries in the tables.
@@ -136,6 +140,7 @@ Another thing to consider is the mutation rate, which is the probability that a 
 We are using a small mutation rate of 0.05 (5%).
 
 ### Population Size
+
 The size of the population is the number of strategies in each generation.
 It has a big impact on both the speed and the quality of the algorithm.
 
@@ -163,6 +168,8 @@ Why does this happen?
 - When calculating the fitness, we are simulating a huge number of rounds, which eventually leads to a loss, resulting
   in a negative fitness score.
 
+[//]: # (Show the result of the optimal strategy)
+
 Running the algorithm with the settings described above for 50 generations yields the following results:
 
 | Generation | Best Fitness Score | Worst Fitness Score | Average Fitness Score |
@@ -185,8 +192,9 @@ similar:
 
 Overall, the algorithm was able to come close to the optimal strategy in 50 generations, which is quite impressive.
 
-In order to achieve better results, we would probably need to increase the number of generations and the population
-size, as well as the number of rounds simulated for each strategy.
+## Conclusion
+
+[//]: # (TODO)
 
 ## Notes
 
@@ -199,6 +207,7 @@ size, as well as the number of rounds simulated for each strategy.
     - The results shown here were obtained after running the algorithm for over 24 hours.
 
 ## Usage
+
 1. Install the required libraries: `pip install -r requirements.txt`
 2. Run the algorithm: `python main.py`
 3. The results will be saved in the `results` folder (the best strategy in each generation will be saved as a CSV file).
