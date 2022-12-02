@@ -1,7 +1,6 @@
 # Genetic Algorithm Solution for Blackjack
 
 ## Introduction
-
 The goal of this project is to find the optimal [Blackjack](https://en.wikipedia.org/wiki/Blackjack) strategy using a
 genetic algorithm.
 
@@ -14,7 +13,6 @@ We used the [EC-Kity](https://github.com/ec-kity/ec-kity/) tool kit for evolutio
 algorithm.
 
 ## What is a Blackjack Strategy?
-
 A Blackjack strategy is basically a lookup table which tells the player which action to take according to the current
 state of the game.
 
@@ -37,7 +35,6 @@ the 1960s:
 [//]: # (insert image here)
 
 ## What is a Genetic Algorithm?
-
 A genetic algorithm is a search algorithm that is inspired by the process of natural selection.
 
 It works by creating a population of random solutions, then repeatedly creating a new generation of solutions by
@@ -59,7 +56,6 @@ This is exactly the case of the Blackjack strategy problem, as there is a huge n
 ## Algorithm Settings
 
 ### Representation
-
 We need to a way to represent the individuals of the population.
 In our case, the individuals are Blackjack strategies.
 
@@ -72,7 +68,6 @@ This is exactly how we are going to represent the strategies in our genetic algo
 - Each entry in these matrices holds an action (HIT / STAND / DOUBLE DOWN).
 
 ### Fitness Score
-
 We need a way to evaluate the quality of a strategy.
 The fitness score is a numeric value that represents how good a strategy is. The higher the score, the better the
 strategy.
@@ -99,7 +94,6 @@ After some experimentation, we found that simulating 100,000 rounds strikes a go
 calculate the fitness score and the accuracy of the fitness score.
 
 ### Selection
-
 We need a way to select the best strategies from the population.
 The strategies are compared using their fitness score.
 
@@ -117,7 +111,6 @@ It also avoids pitfalls such as premature convergence which could occur when usi
 selection.
 
 ### Elitism
-
 We need a way to preserve the best strategies from the previous generation.
 This can be achieved by using a technique called elitism.
 
@@ -129,14 +122,12 @@ We have decided to use a small elitism rate of 0.01 (1%).
 This preserves the best strategies from the previous generation, while still allowing the population to evolve.
 
 ### Crossover
-
 We need a way to combine strategies from the previous generation to create new strategies.
 A crossover can be done in many elaborate ways, but in our case we are going to do something quite straightforward.
 Given two strategies, we iterate over all entries in both tables, and swap the entries between the two strategies with a
 probability of 0.5 (50%).
 
 ### Mutation
-
 We need a way to mutate the strategies in order to introduce diversity in the population.
 
 This is quite simple in our case, as we can simply change the action of a random entries in the tables.
@@ -145,7 +136,6 @@ Another thing to consider is the mutation rate, which is the probability that a 
 We are using a small mutation rate of 0.05 (5%).
 
 ### Population Size
-
 The size of the population is the number of strategies in each generation.
 It has a big impact on both the speed and the quality of the algorithm.
 
@@ -158,6 +148,46 @@ gives satisfactory results.
 
 ## Results
 
+Before showing the results, we need to address an issue about the fitness scores.
+
+When simulating a large enough number of rounds, the fitness score of any strategy will almost certainly be negative.
+Therefore, when looking at the results, we should see the improvement over the generations when the fitness scores
+approach zero.
+
+Why does this happen?
+
+- Ever heard the saying "the house always wins"?
+- The typical hand of Blackjack gives you a 42.22% chance of winning, while the tie stands at around 8.48% (which means
+  that you lose ~50% of the time).
+- This means that any player, no matter the strategy, will lose money in the long run.
+- When calculating the fitness, we are simulating a huge number of rounds, which eventually leads to a loss, resulting
+  in a negative fitness score.
+
+Running the algorithm with the settings described above for 50 generations yields the following results:
+
+| Generation | Best Fitness Score | Worst Fitness Score | Average Fitness Score |
+|------------|--------------------|---------------------|-----------------------|
+| #0         | 0                  | 0                   | 0                     |
+| #10        | 0                  | 0                   | 0                     |
+| #20        | 0                  | 0                   | 0                     |
+| #30        | 0                  | 0                   | 0                     |
+| #40        | 0                  | 0                   | 0                     |
+| #50        | 0                  | 0                   | 0                     |
+
+Best strategy from each generation:
+
+[//]: # (insert gif here)
+
+Comparing the best strategy from the last generation to the known optimal strategy, we can see that they are very
+similar:
+
+[//]: # (comparison image)
+
+Overall, the algorithm was able to come close to the optimal strategy in 50 generations, which is quite impressive.
+
+In order to achieve better results, we would probably need to increase the number of generations and the population
+size, as well as the number of rounds simulated for each strategy.
+
 ## Notes
 
 1. 3rd party libraries used:
@@ -169,7 +199,6 @@ gives satisfactory results.
     - The results shown here were obtained after running the algorithm for over 24 hours.
 
 ## Usage
-
 1. Install the required libraries: `pip install -r requirements.txt`
 2. Run the algorithm: `python main.py`
 3. The results will be saved in the `results` folder (the best strategy in each generation will be saved as a CSV file).
