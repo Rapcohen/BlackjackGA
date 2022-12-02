@@ -112,24 +112,25 @@ class StrategyStatistics(BestAverageWorstStatistics):
         save_result_to_csv_file(self.execution_date_time, best_individual, generation)
 
 
-algo = SimpleEvolution(
-    population=Subpopulation(
-        evaluator=StrategyEvaluator(n_hands=100000),
-        creators=StrategyCreator(),
-        pcr=None,
-        operators_sequence=[
-            StrategyCrossover(),
-            StrategyMutation(),
-        ],
-        selection_methods=[
-            (TournamentSelection(tournament_size=2, higher_is_better=True, events=None), 1)
-        ],
-        elitism_rate=0.01,  # find optimal value
-        population_size=500,  # find optimal value
-        individuals=None,
-        higher_is_better=True
-    ),
-    max_generation=50,  # find optimal value
-    max_workers=None,  # uses all available cores
-    statistics=StrategyStatistics(),
-)
+def evolution_algo(population_size=500, n_generations=50, elitism_rate=0.01, n_hands=100000, individuals=None):
+    return SimpleEvolution(
+        population=Subpopulation(
+            evaluator=StrategyEvaluator(n_hands=n_hands),
+            creators=StrategyCreator(),
+            pcr=None,
+            operators_sequence=[
+                StrategyCrossover(),
+                StrategyMutation(),
+            ],
+            selection_methods=[
+                (TournamentSelection(tournament_size=2, higher_is_better=True, events=None), 1)
+            ],
+            elitism_rate=elitism_rate,
+            population_size=population_size,
+            individuals=individuals,
+            higher_is_better=True
+        ),
+        max_generation=n_generations,
+        max_workers=None,  # uses all available cores
+        statistics=StrategyStatistics(),
+    )
