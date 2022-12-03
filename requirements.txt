@@ -1,0 +1,2 @@
+eckity~=0.2.3
+blackjack21~=1.2.1

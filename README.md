@@ -4,7 +4,7 @@
 - each column represents a dealer's card
 - each row represents a player's hand
 - each cell represents the action to take (HIT, STAND, DOUBLE)
-- HARD-HANDS (16 x 10): row values are 4 - 20
+- HARD-HANDS (17 x 10): row values are 4 - 20
 - SOFT-HANDS (8 x 10): row values are ACE+2 - ACE+9
 
 # Fitness
