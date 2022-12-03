@@ -174,19 +174,18 @@ Running the algorithm with the settings described above for 50 generations yield
 
 | Generation | Best Fitness Score | Worst Fitness Score | Average Fitness Score |
 |------------|--------------------|---------------------|-----------------------|
-| #0         | 0                  | 0                   | 0                     |
-| #10        | 0                  | 0                   | 0                     |
-| #20        | 0                  | 0                   | 0                     |
-| #30        | 0                  | 0                   | 0                     |
-| #40        | 0                  | 0                   | 0                     |
-| #50        | 0                  | 0                   | 0                     |
+| #1         | -34105             | -59687              | -47502                |
+| #10        | -21231             | -39033              | -29604                |
+| #20        | -12948             | -23578              | -18873                |
+| #30        | -10614             | -16959              | -13614                |
+| #40        | -8913              | -13184              | -10876                |
+| #50        | -7292              | -11996              | -9532                 |
 
 Best strategy from each generation:
 
 [//]: # (insert gif here)
 
-Comparing the best strategy from the last generation to the known optimal strategy, we can see that they are very
-similar:
+Comparing the best strategy of the last generation to the known optimal strategy:
 
 [//]: # (comparison image)
 
