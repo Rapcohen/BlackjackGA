@@ -181,8 +181,6 @@ Running the algorithm with the settings described above for 70 generations yield
 | #60        | -32267             | -43943              | -37113                |
 | #70        | -30973             | -44163              | -35399                |
 
-Best strategy from each generation:
-
 ![Evolution](images/evolution.gif)
 
 Comparing the best strategy of the last generation to the known optimal strategy:
@@ -193,7 +191,7 @@ Comparing the best strategy of the last generation to the known optimal strategy
 
 Overall, the algorithm was able to come close to the optimal strategy in 70 generations, which is quite impressive.
 
-## Conclusion
+[//]: # (## Conclusion)
 
 [//]: # (TODO)
 
@@ -203,8 +201,8 @@ Overall, the algorithm was able to come close to the optimal strategy in 70 gene
     - [EC-Kity (Version 0.2.3)](https://pypi.org/project/eckity/) for the genetic algorithm execution.
     - [blackjack21 (version 1.2.1)](https://pypi.org/project/blackjack21/) for the Blackjack simulation
 2. Performance:
-    - The algorithm takes a long time to run with the mentioned settings.
-    - The bottleneck is the fitness score calculation, which simulates 100,000 rounds of Blackjack per strategy.
+    - The algorithm takes a long time to run with the settings mentioned above.
+    - The bottleneck is the fitness score calculation, which simulates many rounds of Blackjack per strategy.
     - The results shown here were obtained after running the algorithm for over 24 hours.
 
 ## Usage
@@ -216,25 +214,3 @@ Overall, the algorithm was able to come close to the optimal strategy in 70 gene
 ## Authors
 
 Raphael Cohen & Keren Tzidki
-
-## Citation
-
-```
-@article{eckity2022,
-    author = {Sipper, Moshe and Halperin, Tomer and Tzruia, Itai and  Elyasaf, Achiya},
-    title = {{EC-KitY}: Evolutionary Computation Tool Kit in {Python}},
-    publisher = {arXiv},
-    year = {2022},
-    url = {https://arxiv.org/abs/2207.10367},
-    doi = {10.48550/ARXIV.2207.10367},
-}
-
-@misc{eckity2022git,
-    author = {Sipper, Moshe and Halperin, Tomer and Tzruia, Itai and  Elyasaf, Achiya},
-    title = {{EC-KitY}: Evolutionary Computation Tool Kit in {Python}},
-    year = {2022},
-    publisher = {GitHub},
-    journal = {GitHub repository},
-    howpublished = {\url{https://www.eckity.org/} }
-}
-```
