@@ -1,5 +1,6 @@
 # Genetic Algorithm Solution for Blackjack
 
+
 ## Introduction
 
 The goal of this project is to find the optimal [Blackjack](https://en.wikipedia.org/wiki/Blackjack) strategy by using a
