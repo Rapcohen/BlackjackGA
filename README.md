@@ -29,7 +29,7 @@ A strategy is usually represented by two tables, one for hard hands and the othe
 The optimal Blackjack strategy was already found by [Edward O. Thorp](https://en.wikipedia.org/wiki/Edward_O._Thorp) in
 the 1960s:
 
-[//]: # (insert image here)
+![Optimal Strategy for Blackjack](images/classic_optimal_strategy.png)
 
 ## Why Use a Genetic Algorithm?
 
@@ -90,7 +90,7 @@ strategy's quality.
 This is especially critical for later generations, where strategies become very similar as they converge to the optimal
 one.
 
-After some experimentation, we found that simulating 100,000 rounds strikes a good balance between the time it takes to
+After some experimentation, we found that simulating 500,000 rounds strikes a good balance between the time it takes to
 calculate the fitness score and the accuracy of the fitness score.
 
 ### Selection
@@ -148,7 +148,7 @@ A large population size is important for finding the optimal solution since it a
 part of the search space.
 However, a large population size also means that the algorithm will take longer to run.
 
-We have experimented with population sizes ranging from 100 to 1000, and we have found that a population size of 500
+We have experimented with population sizes ranging from 100 to 1000, and we have found that a population size of 1000
 gives satisfactory results.
 
 ## Results
@@ -168,28 +168,30 @@ Why does this happen?
 - When calculating the fitness, we are simulating a huge number of rounds, which eventually leads to a loss, resulting
   in a negative fitness score.
 
-[//]: # (Show the result of the optimal strategy)
-
-Running the algorithm with the settings described above for 50 generations yields the following results:
+Running the algorithm with the settings described above for 70 generations yields the following results:
 
 | Generation | Best Fitness Score | Worst Fitness Score | Average Fitness Score |
 |------------|--------------------|---------------------|-----------------------|
-| #1         | -34105             | -59687              | -47502                |
-| #10        | -21231             | -39033              | -29604                |
-| #20        | -12948             | -23578              | -18873                |
-| #30        | -10614             | -16959              | -13614                |
-| #40        | -8913              | -13184              | -10876                |
-| #50        | -7292              | -11996              | -9532                 |
+| #1         | -165306            | -295196             | -233271               |
+| #10        | -98041             | -185088             | -139774               |
+| #20        | -65134             | -111275             | -86320                |
+| #30        | -48831             | -102021             | -60355                |
+| #40        | -40675             | -55615              | -46776                |
+| #50        | -34777             | -53917              | -40360                |
+| #60        | -32267             | -43943              | -37113                |
+| #70        | -30973             | -44163              | -35399                |
 
 Best strategy from each generation:
 
-[//]: # (insert gif here)
+![Evolution](images/evolution.gif)
 
 Comparing the best strategy of the last generation to the known optimal strategy:
 
-[//]: # (comparison image)
+| Known Optimal Strategy                           | Our Best Strategy                   |
+|--------------------------------------------------|-------------------------------------|
+| ![Optimal Strategy](images/optimal_strategy.png) | ![Best Strategy](images/gen-70.png) |
 
-Overall, the algorithm was able to come close to the optimal strategy in 50 generations, which is quite impressive.
+Overall, the algorithm was able to come close to the optimal strategy in 70 generations, which is quite impressive.
 
 ## Conclusion
 
