@@ -184,8 +184,6 @@ Running the algorithm with the settings described above for 70 generations yield
 
 ![Evolution](images/evolution.gif)
 
-Comparing the best strategy of the last generation to the known optimal strategy:
-
 | Known Optimal Strategy                           | Our Best Strategy                   |
 |--------------------------------------------------|-------------------------------------|
 | ![Optimal Strategy](images/optimal_strategy.png) | ![Best Strategy](images/gen-70.png) |
