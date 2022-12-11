@@ -17,8 +17,8 @@ state of the game.
 
 The state of the game is defined by the player's hand and the dealer's up card.
 
-The action that the player can take is **hit**, **stand**, **double down**, or **split**.
-For simplicity, in this project we will not consider the split action.
+The action that the player can take is **hit**, **stand**, **double down**, and in some forms of the game - **split**.
+For simplicity, in this project we will try to find the optimal strategy for Blackjack games in which split is not allowed.
 
 There are two types of Blackjack hands: **hard** and **soft**:
 
@@ -188,7 +188,13 @@ Running the algorithm with the settings described above for 70 generations yield
 |--------------------------------------------------|-------------------------------------|
 | ![Optimal Strategy](images/optimal_strategy.png) | ![Best Strategy](images/gen-70.png) |
 
-Overall, the algorithm was able to come close to the optimal strategy in 70 generations, which is quite impressive.
+Overall, the algorithm was able to come close to the optimal strategy in 70 generations.
+
+In fact, we calculated the fitness score of the optimal strategy and got -33342, which is worse than the best fitness
+score in the 70th generation.
+
+Since Blackjack is not a deterministic game, we can't know for sure whether one strategy is better than the other or not,
+but nevertheless getting this close to the optimal strategy in 70 generations is quite impressive.
 
 [//]: # (## Conclusion)
 
@@ -202,7 +208,9 @@ Overall, the algorithm was able to come close to the optimal strategy in 70 gene
 2. Performance:
     - The algorithm takes a long time to run with the settings mentioned above.
     - The bottleneck is the fitness score calculation, which simulates many rounds of Blackjack per strategy.
-    - The results shown here were obtained after running the algorithm for over 24 hours.
+    - The results shown here were obtained after running the algorithm for over 48 hours, and after altering the EC-Kity
+      library in our local virtual environment so that it'll use ProcessPoolExecutor instead of ThreadPoolExecutor.
+      The local changes can be found here: https://github.com/EC-KitY/EC-KitY/compare/main...Rapcohen:EC-KitY:process-pool-executor
 
 ## Usage
 
