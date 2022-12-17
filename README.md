@@ -6,9 +6,21 @@
 The goal of this project is to find the optimal [Blackjack](https://en.wikipedia.org/wiki/Blackjack) strategy by using a
 genetic algorithm.
 
-It is important to mention that this problem has already been solved with different approaches.
-The fact that this problem has already been solved allows us to compare the results of our algorithm with the best known
-solution.
+Blackjack is a popular card game that is played in casinos all over the world. It is also known as 21, as the goal of 
+the game is to get a hand value of 21 or as close to 21 as possible without going over.
+
+In blackjack, each player is dealt two cards and then has the option to "hit" and receive additional cards or "stand" 
+and keep their current total. The dealer also hits or stands according to a set of rules that are determined by the 
+casino. The player's hand is compared to the dealer's hand, and the player wins if their hand has a higher value than 
+the dealer's hand or if the dealer goes over 21.
+
+Blackjack can be played with one or more decks of cards, and the value of the cards is as follows: all face cards 
+(kings, queens, and jacks) are worth 10, aces are worth 1 or 11 (player's choice), and all other cards are worth their 
+face value.
+
+There are many variations of blackjack, and the specific rules can vary from one casino to another. However, the basic 
+principles of the game are the same everywhere.
+
 
 ## What is a Blackjack Strategy?
 
@@ -16,9 +28,6 @@ A Blackjack strategy is basically a lookup table which tells the player which ac
 state of the game.
 
 The state of the game is defined by the player's hand and the dealer's up card.
-
-The action that the player can take is **hit**, **stand**, **double down**, and in some forms of the game - **split**.
-For simplicity, in this project we will try to find the optimal strategy for Blackjack games in which split is not allowed.
 
 There are two types of Blackjack hands: **hard** and **soft**:
 
@@ -31,6 +40,13 @@ The optimal Blackjack strategy was already found by [Edward O. Thorp](https://en
 the 1960s:
 
 ![Optimal Strategy for Blackjack](images/classic_optimal_strategy.png)
+
+In this strategy, 'H' means **hit**, 'S' means **stand**, and 'D' means **double down**. There is also a third table with
+'P's in it - which means **split**, meaning that his strategy is for a form of Blackjack that allows split.
+For simplicity, in this project we will try to find the optimal strategy for Blackjack games in which split is not allowed.
+
+The fact that an optimal strategy has already been found will allow us to compare the results of our algorithm with the best known
+solution and know how well we did.
 
 ## Why Use a Genetic Algorithm?
 
