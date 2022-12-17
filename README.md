@@ -206,8 +206,8 @@ Running the algorithm with the settings described above for 70 generations yield
 
 Overall, the algorithm was able to come close to the optimal strategy in 70 generations.
 
-In fact, we calculated the fitness score of the optimal strategy and got -33342, which is worse than the best fitness
-score in the 70th generation.
+In fact, we simulated 500,000 hands using the known optimal strategy and got a fitness score of -33342, while the best fitness
+score in the 70th generation is -30973, which means that in our simulation we even did a better job than the optimal strategy.
 
 Since Blackjack is not a deterministic game, we can't know for sure whether one strategy is better than the other or not,
 but nevertheless getting this close to the optimal strategy in 70 generations is quite impressive.
@@ -226,7 +226,7 @@ but nevertheless getting this close to the optimal strategy in 70 generations is
     - The bottleneck is the fitness score calculation, which simulates many rounds of Blackjack per strategy.
     - The results shown here were obtained after running the algorithm for over 48 hours, and after altering the EC-Kity
       library in our local virtual environment so that it'll use ProcessPoolExecutor instead of ThreadPoolExecutor.
-      The local changes can be found here: https://github.com/EC-KitY/EC-KitY/compare/main...Rapcohen:EC-KitY:process-pool-executor
+      The local changes can be found [here](https://github.com/EC-KitY/EC-KitY/compare/main...Rapcohen:EC-KitY:process-pool-executor)
 
 ## Usage
 
